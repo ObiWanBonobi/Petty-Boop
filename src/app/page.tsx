@@ -10,9 +10,10 @@ import {
     Table,
     TableCell,
     TableRow,
-    TableHead, TableBody, Paper, Divider
+    TableHead, TableBody, Paper, Divider,
 } from '@mui/material';
 import * as React from 'react';
+import {DataGrid, GridColDef} from '@mui/x-data-grid';
 
 const JsonUploader: React.FC = () => {
     const [jsonContent, setJsonContent] = useState<string>('');
@@ -44,17 +45,25 @@ const JsonUploader: React.FC = () => {
         reader.readAsText(file);
     };
 
-    function createData(
-        name: string,
-        calories: number
-    ) {
-        return {name, calories};
-    }
+    const columns: GridColDef[] = [
+        {field: 'id', headerName: 'ID'},
+        {field: 'name', headerName: 'Name'},
+        {field: 'handle', headerName: 'Handle'},
+    ];
 
     const rows = [
-        createData('Frozen yoghurt', 159),
-        createData('Ice cream sandwich', 237),
-        createData('Eclair', 262),];
+        {id: 1, name: 'Snow', handle: 'Jon'},
+        {id: 2, name: 'Lannister', handle: 'Cersei'},
+        {id: 3, name: 'Lannister', handle: 'Jaime'},
+        {id: 4, name: 'Stark', handle: 'Arya'},
+        {id: 5, name: 'Targaryen', handle: 'Daenerys'},
+        {id: 6, name: 'Melisandre', handle: 'ranod'},
+        {id: 7, name: 'Clifford', handle: 'Ferrara'},
+        {id: 8, name: 'Frances', handle: 'Rossini'},
+        {id: 9, name: 'Roxie', handle: 'Harvey'},
+    ];
+
+    const paginationModel = {page: 0, pageSize: 10};
 
     return (
         <Box sx={{width: '100vw', height: '100vw', backgroundColor: 'darkslateblue', p: 30}}>
@@ -89,57 +98,14 @@ const JsonUploader: React.FC = () => {
                     </Grid>
                 </Grid>
                 <Grid sx={{backgroundColor: 'olive', p: 5}}>
-                    <TableContainer component={Paper}>
-                        <Table title='Unfollow these Bitches' stickyHeader>
-                            <TableHead title='Unfollow these Bitches'>
-                                <TableRow>
-                                    <TableCell>Name</TableCell>
-                                    <TableCell align="right">Handle</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {rows.map((row) => (
-                                    <TableRow
-                                        key={row.name}
-                                        sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                                    >
-                                        <TableCell component="th" scope="row">
-                                            {row.name}
-                                        </TableCell>
-                                        <TableCell align="right">{row.calories}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                    <Typography variant='h5' pb='15px'>Unfollow these ho's</Typography>
+                    <DataGrid rows={rows} columns={columns} pageSizeOptions={[20, 50]} checkboxSelection
+                              initialState={{pagination: {paginationModel}}} sx={{cursor: 'pointer'}}/>
                 </Grid>
             </Grid>
         </Box>
-    );
+    )
+        ;
 };
 
 export default JsonUploader;
-
-// <Box>
-//     <Grid container direction="row" spacing={3} sx={{justifyContent: "center", alignItems: "stretch"}}>
-//         <Grid size={6}>
-//             <Button
-//                 variant="contained"
-//                 onChange={handleButtonClick}
-//             >
-//                 Upload follower Json file
-//             </Button>
-//         </Grid>
-//         <Grid size={6}>
-//             <Typography>2</Typography>
-//         </Grid>
-//     </Grid>
-//     <TextField
-//         multiline
-//         fullWidth
-//         minRows={10}
-//         margin="normal"
-//         value={jsonContent}
-//         InputProps={{readOnly: true}}
-//     />
-// </Box>
